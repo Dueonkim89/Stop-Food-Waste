@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -49,6 +53,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    //Firebase.ini
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -102,6 +112,36 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('bandnames')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.data!.docs != null &&
+                      snapshot.data!.docs.isNotEmpty) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              var post = snapshot.data!.docs[index];
+                              return ListTile(
+                                  leading: Text(post['name']),
+                                  trailing: Text('Votes ${post['votes']}'));
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                })
           ],
         ),
       ),
