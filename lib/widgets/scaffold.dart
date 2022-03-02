@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// screens
+import '../screens/camera_page.dart';
 
 class ProjectScaffold extends StatefulWidget {
   final String title;
@@ -26,16 +28,25 @@ class _ProjectScaffoldState extends State<ProjectScaffold> {
       ),
       body: widget.childComponent,
       // only show if from main page
-      floatingActionButton: widget.showCamera ? showCameraActionButton() : null,
+      floatingActionButton:
+          widget.showCamera ? showCameraActionButton(context) : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget showCameraActionButton() {
+  // method to show camera action button
+  Widget showCameraActionButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => {},
+      // route to camera page
+      onPressed: () => routeToCameraPage(context),
       tooltip: 'Increment',
       child: const Icon(Icons.camera_alt_sharp),
     );
+  }
+
+  // route to camera page
+  void routeToCameraPage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CameraPage()));
   }
 }
