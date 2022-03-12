@@ -13,6 +13,7 @@ class NewPost extends StatefulWidget {
 }
 
 class _NewPostState extends State<NewPost> {
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return ProjectScaffold(
@@ -24,8 +25,24 @@ class _NewPostState extends State<NewPost> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.file(widget.image, height: 275),
+        createFormField(),
       ],
     ));
+  }
+
+  Widget createFormField() {
+    return Form(
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Image.file(widget.image, height: 250),
+      Padding(
+          padding: EdgeInsets.all(35),
+          child: TextFormField(
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                hintText: "Number of Wasted Items",
+                border: OutlineInputBorder()),
+          )),
+    ]));
   }
 }
