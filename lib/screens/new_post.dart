@@ -38,22 +38,43 @@ class _NewPostState extends State<NewPost> {
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Image.file(widget.image, height: 300),
           Padding(
-              padding: EdgeInsets.all(35),
-              child: TextFormField(
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    hintText: "Number of Wasted Items",
-                    border: OutlineInputBorder()),
-              )),
+            padding: EdgeInsets.all(35),
+            child: TextFormField(
+              autofocus: true,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  hintText: "Number of Wasted Items",
+                  border: OutlineInputBorder()),
+              onSaved: (value) {
+                // transfer into DTO and save if valid
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Please enter a quantity!";
+                }
+                try {
+                  int rating = int.parse(value);
+                } on FormatException {
+                  return "Please enter a valid number!";
+                }
+                return null;
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(0),
             child: ElevatedButton(
               onPressed: () => {
-                // send to fire base
+                if (formKey.currentState!.validate())
+                  {
+                    formKey.currentState!.save(),
+                    // store time, long and lat into DTO
 
-                // navigate to home page
-                Navigator.of(context).pop()
+                    // send to fire base
+
+                    // navigate to home page
+                    Navigator.of(context).pop()
+                  }
               },
               child: const Icon(Icons.cloud_upload_sharp, size: 50),
               style: ElevatedButton.styleFrom(
