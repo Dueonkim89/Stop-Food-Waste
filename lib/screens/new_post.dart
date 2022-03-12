@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
+// models
+import '../models/NewPostModel.dart';
 // widgets
 import '../widgets/scaffold.dart';
 
@@ -14,6 +17,22 @@ class NewPost extends StatefulWidget {
 
 class _NewPostState extends State<NewPost> {
   final formKey = GlobalKey<FormState>();
+  LocationData? locationData;
+  // Data Transfer Object
+  final NewPostDetails = PostDetails();
+
+  @override
+  void initState() {
+    super.initState();
+    getUserLocation();
+  }
+
+  void getUserLocation() async {
+    var locationService = Location();
+    locationData = await locationService.getLocation();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProjectScaffold(
@@ -47,6 +66,7 @@ class _NewPostState extends State<NewPost> {
                   border: OutlineInputBorder()),
               onSaved: (value) {
                 // transfer into DTO and save if valid
+                NewPostDetails.quantity = int.parse(value!);
               },
               validator: (value) {
                 if (value!.isEmpty) {
@@ -69,8 +89,12 @@ class _NewPostState extends State<NewPost> {
                   {
                     formKey.currentState!.save(),
                     // store time, long and lat into DTO
-
+                    NewPostDetails.dateTime = DateTime.now(),
+                    NewPostDetails.lat = locationData!.latitude,
+                    NewPostDetails.long = locationData!.longitude,
                     // send to fire base
+
+                    // get image url and store into DTO
 
                     // navigate to home page
                     Navigator.of(context).pop()
