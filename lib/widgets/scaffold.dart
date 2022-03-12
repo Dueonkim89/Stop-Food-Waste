@@ -22,6 +22,7 @@ class _ProjectScaffoldState extends State<ProjectScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,

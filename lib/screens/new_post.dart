@@ -33,8 +33,10 @@ class _NewPostState extends State<NewPost> {
   Widget createFormField() {
     return Form(
         key: formKey,
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Image.file(widget.image, height: 250),
+        child: SingleChildScrollView(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Image.file(widget.image, height: 300),
           Padding(
               padding: EdgeInsets.all(35),
               child: TextFormField(
@@ -45,7 +47,7 @@ class _NewPostState extends State<NewPost> {
                     border: OutlineInputBorder()),
               )),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(0),
             child: ElevatedButton(
               onPressed: () => {
                 // send to fire base
@@ -57,9 +59,9 @@ class _NewPostState extends State<NewPost> {
               style: ElevatedButton.styleFrom(
                   primary: Colors.blue,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15)),
             ),
           ),
-        ]));
+        ])));
   }
 }
