@@ -32,17 +32,34 @@ class _NewPostState extends State<NewPost> {
 
   Widget createFormField() {
     return Form(
+        key: formKey,
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-      Image.file(widget.image, height: 250),
-      Padding(
-          padding: EdgeInsets.all(35),
-          child: TextFormField(
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                hintText: "Number of Wasted Items",
-                border: OutlineInputBorder()),
-          )),
-    ]));
+          Image.file(widget.image, height: 250),
+          Padding(
+              padding: EdgeInsets.all(35),
+              child: TextFormField(
+                autofocus: true,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: "Number of Wasted Items",
+                    border: OutlineInputBorder()),
+              )),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () => {
+                // send to fire base
+
+                // navigate to home page
+                Navigator.of(context).pop()
+              },
+              child: const Icon(Icons.cloud_upload_sharp, size: 50),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
+            ),
+          ),
+        ]));
   }
 }
