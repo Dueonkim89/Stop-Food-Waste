@@ -32,9 +32,8 @@ class HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('bandnames')
-                  .snapshots(),
+              stream:
+                  FirebaseFirestore.instance.collection('posts').snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData &&
@@ -49,15 +48,23 @@ class HomePageState extends State<HomePage> {
                           itemBuilder: (BuildContext context, int index) {
                             var post = snapshot.data!.docs[index];
                             return ListTile(
-                                leading: Text(post['name']),
-                                trailing: Text('Votes ${post['votes']}'));
+                                leading: Text(post['date'],
+                                    style: const TextStyle(fontSize: 18)),
+                                trailing: Text(post['quantity'].toString(),
+                                    style: const TextStyle(fontSize: 18)));
                           },
                         ),
                       ),
                     ],
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return Column(children: const [
+                    SizedBox(height: 100),
+                    SizedBox(
+                        child: CircularProgressIndicator(),
+                        height: 125.0,
+                        width: 125.0),
+                  ]);
                 }
               })
         ],

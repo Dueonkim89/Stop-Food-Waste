@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:location/location.dart';
 // models
 import '../models/NewPostModel.dart';
@@ -18,6 +21,7 @@ class NewPost extends StatefulWidget {
 class _NewPostState extends State<NewPost> {
   final formKey = GlobalKey<FormState>();
   LocationData? locationData;
+  final picker = ImagePicker();
   // Data Transfer Object
   final NewPostDetails = PostDetails();
 
@@ -47,6 +51,16 @@ class _NewPostState extends State<NewPost> {
         createFormField(),
       ],
     ));
+  }
+
+  // function to send image to firebase
+  Future sendImageAndGetURL(File image) async {
+    var fileName = DateTime.now().toString() + '.jpg';
+    Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
+    UploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask;
+    final url = await storageReference.getDownloadURL();
+    return url;
   }
 
   Widget createFormField() {
@@ -92,12 +106,23 @@ class _NewPostState extends State<NewPost> {
                     NewPostDetails.dateTime = DateTime.now(),
                     NewPostDetails.lat = locationData!.latitude,
                     NewPostDetails.long = locationData!.longitude,
-                    // send to fire base
 
-                    // get image url and store into DTO
-
-                    // navigate to home page
-                    Navigator.of(context).pop()
+                    // get image url
+                    // Inside callback: store imageURL into DTO
+                    sendImageAndGetURL(widget.image).then((imageUrl) => {
+                          NewPostDetails.imageURL = imageUrl,
+                          // send data to fire base
+                          FirebaseFirestore.instance.collection('posts').add({
+                            'quantity': NewPostDetails.quantity,
+                            'lat': NewPostDetails.lat,
+                            'long': locationData!.longitude,
+                            'date': DateFormat('EEEE, MMMM d, yyyy')
+                                .format(NewPostDetails.dateTime),
+                            'url': NewPostDetails.imageURL
+                          }),
+                          // navigate to home page
+                          Navigator.of(context).pop()
+                        }),
                   }
               },
               child: const Icon(Icons.cloud_upload_sharp, size: 50),
