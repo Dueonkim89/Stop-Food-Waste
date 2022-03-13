@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+// screen
+import './post_detail.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -48,10 +50,15 @@ class HomePageState extends State<HomePage> {
                           itemBuilder: (BuildContext context, int index) {
                             var post = snapshot.data!.docs[index];
                             return ListTile(
-                                leading: Text(post['date'],
-                                    style: const TextStyle(fontSize: 18)),
-                                trailing: Text(post['quantity'].toString(),
-                                    style: const TextStyle(fontSize: 18)));
+                              leading: Text(post['date'],
+                                  style: const TextStyle(fontSize: 18)),
+                              trailing: Text(post['quantity'].toString(),
+                                  style: const TextStyle(fontSize: 18)),
+                              onTap: () => {
+                                // to navigate to detail page
+                                routeToDetailPage(context, post)
+                              },
+                            );
                           },
                         ),
                       ),
@@ -70,5 +77,19 @@ class HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  // route to detail page
+  // inputs are: context and snapshot from firebase
+  void routeToDetailPage(
+      BuildContext context, QueryDocumentSnapshot postDetail) {
+    // send date, quantity, lat, long, url
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PostDetail(
+            url: postDetail['url'],
+            date: postDetail['date'],
+            quantity: postDetail['quantity'],
+            lat: postDetail['lat'],
+            long: postDetail['long'])));
   }
 }
