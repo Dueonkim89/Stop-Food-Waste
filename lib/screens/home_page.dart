@@ -51,15 +51,22 @@ class HomePageState extends State<HomePage> {
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             var post = snapshot.data!.docs[index];
-                            return ListTile(
-                              leading: Text(post['date'],
-                                  style: const TextStyle(fontSize: 18)),
-                              trailing: Text(post['quantity'].toString(),
-                                  style: const TextStyle(fontSize: 18)),
-                              onTap: () => {
-                                // to navigate to detail page
-                                routeToDetailPage(context, post)
-                              },
+                            return Semantics(
+                              readOnly: true,
+                              enabled: true,
+                              label: 'Tap to get details of this post',
+                              onTapHint:
+                                  'Tap this post to get its specific details',
+                              child: ListTile(
+                                leading: Text(post['date'],
+                                    style: const TextStyle(fontSize: 18)),
+                                trailing: Text(post['quantity'].toString(),
+                                    style: const TextStyle(fontSize: 18)),
+                                onTap: () => {
+                                  // to navigate to detail page
+                                  routeToDetailPage(context, post)
+                                },
+                              ),
                             );
                           },
                         ),

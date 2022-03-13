@@ -28,12 +28,17 @@ class _CameraPageState extends State<CameraPage> {
     // button to either allow taking a picture or uploading from gallery
     // redirect to new_post once image is taken or selected..
     return Center(
-        child: ElevatedButton(
-      child: Text('Take photo'),
-      onPressed: () {
-        takePicture(context);
-      },
-    ));
+        child: Semantics(
+            enabled: true,
+            button: true,
+            label: 'Open device camera and take a picture',
+            onTapHint: 'Use camera to take a picture',
+            child: ElevatedButton(
+              child: Text('Take photo'),
+              onPressed: () {
+                takePicture(context);
+              },
+            )));
   }
 
   // take picture

@@ -37,12 +37,17 @@ class _ProjectScaffoldState extends State<ProjectScaffold> {
 
   // method to show camera action button
   Widget showCameraActionButton(BuildContext context) {
-    return FloatingActionButton(
-      // route to camera page
-      onPressed: () => routeToCameraPage(context),
-      tooltip: 'Increment',
-      child: const Icon(Icons.camera_alt_sharp),
-    );
+    return Semantics(
+        enabled: true,
+        button: true,
+        label: 'Button to navigate to camera screen',
+        onTapHint: 'Navigate to camera screen',
+        child: FloatingActionButton(
+          // route to camera page
+          onPressed: () => routeToCameraPage(context),
+          tooltip: 'Take picture of wasted food',
+          child: const Icon(Icons.camera_alt_sharp),
+        ));
   }
 
   // route to camera page
