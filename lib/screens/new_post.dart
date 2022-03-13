@@ -118,7 +118,9 @@ class _NewPostState extends State<NewPost> {
                             'long': locationData!.longitude,
                             'date': DateFormat('EEEE, MMMM d, yyyy')
                                 .format(NewPostDetails.dateTime),
-                            'url': NewPostDetails.imageURL
+                            'url': NewPostDetails.imageURL,
+                            'epoch_seconds':
+                                NewPostDetails.dateTime.millisecondsSinceEpoch
                           }),
                           // navigate to home page
                           Navigator.of(context).pop()
