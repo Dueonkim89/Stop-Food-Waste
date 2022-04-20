@@ -1,4 +1,4 @@
-# wasteagram
+# Stop Food Waste
 
 A new Flutter project.
 
